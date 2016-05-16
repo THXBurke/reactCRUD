@@ -26,4 +26,4 @@ gulp.task('static:dev', () => {
 });
 
 gulp.task('build:dev', ['webpack:dev', 'static:dev']);
-gulp.task('default', ['buld:dev']);
+gulp.task('default', ['build:dev']);
