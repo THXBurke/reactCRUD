@@ -1,0 +1,12 @@
+{
+  "name": "react_crud_app",
+  "version": "1.0.0",
+  "description": "react_crud_app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Rachel Burke",
+  "license": "MIT"
+}
