@@ -1,7 +1,7 @@
 const Router = require('express').Router;
-const Wine = require(__dirname + '/..models/wine_model.js');
+const Wine = require(__dirname + '/../models/wine_model.js');
 const bodyParser = require('body-parser').json();
-const errorhandler = require(__dirname + '/lib/error_handler.js');
+const error_handler = require(__dirname + '/../lib/error_handler.js');
 
 var wineRouter = module.exports = new Router();
 

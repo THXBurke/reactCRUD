@@ -103,7 +103,7 @@ var getWine = React.createClass({
               </li>
           );
         })}
-        </ol>
+      </ol>
       );
     }
   });
