@@ -1,5 +1,8 @@
 const gulp = require('gulp');
+const eslint = require('gulp-eslint');
 const webpack = require('webpack-stream');
+
+var clientFiles = [''];
 
 gulp.task('webpack:dev', () => {
   gulp.src(__dirname + '/app/js/entry.js')

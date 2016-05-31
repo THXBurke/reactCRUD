@@ -1,4 +1,5 @@
 const express = require('express');
-express().use(express.static(__dirname + '/build')).listen(5000, () => {
-  console.log('Client Server ready on port 5000');
-});
+const app = express();
+
+module.exports = exports = app.use(express.static(__dirname + '/build'))
+  .listen(5000, () => console.log('Client Server happy on port 5000'));

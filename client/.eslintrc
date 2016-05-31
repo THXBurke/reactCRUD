@@ -1,11 +1,22 @@
 {
   "env": {
-    "mocha": true,
     "browser": true,
-    "es6": true
+    "es6": true,
+    "jasmine": true
+  },
+   "ecmaFeatures": {
+    "sourceType": "module"
+  },
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "experimentalObjectRestSpread": true
+    }
   },
   "globals": {
-
+    "react": true,
+    "jsw": true
   },
   "rules": {
     "indent": ["error", 2],
@@ -20,7 +31,7 @@
     "no-empty-character-class": 2,
     "no-ex-assign": 2,
     "no-extra-boolean-cast": 2,
-    "no-extra-parens": 1,
+    "no-extra-parens": 0,
     "no-extra-semi": 2,
     "no-func-assign": 2,
     "no-inner-declarations": 2,
@@ -100,7 +111,7 @@
     "no-undef": 2,
     "no-undef-init": 2,
     "no-undefined": 1,
-    "no-unused-vars": 2,
+    "no-unused-vars": 0,
     "no-use-before-define": 0,
 
     "handle-callback-err": 2,
@@ -202,7 +213,7 @@
     "max-depth": 0,
     "max-len": [
       1,
-      100,
+      200,
       2
     ],
     "max-params": 0,
