@@ -9,3 +9,5 @@ Write  a single resource CRUD client app using a framework other Angular. You ca
 * go to a new terminal window and navigate to the server directory and run node server.js and the window should respond with 'Good things happen at port: 3000'
 * run gulp in both the server and client directories
 * open a new terminal and run mongod
+
+Much better error messages in react! And cleaner html page
