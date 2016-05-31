@@ -1,138 +1,119 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
+const $ = require('jquery');
+const superagent = require('superagent');
 
-var getWine = React.createClass({
-  getInitialState: function() {
-    this.displayWine();
+var List = React.createClass({
+  handleDeleteClick: function(e) {
+    e.preventDefault();
+    this.handleWineDelete();
+  },
+  handleWineDelete: function() {
+    console.log(this.wines._id);
+    superagent
+    .delete('http://localhost:5000/api/wine' + this.wines._id)
+    .end((err) => {
+      console.log(err);
+      this.wines.loadWinesFromServer();
+    }
+  );
+  },
+  render: function() {
+    return (
+    <li>
+    (id: { this.wines._id }) name: { this.wines.name } description: { this.wines.description }
+    <button onClick={ this.handleWineDelete } type="submit">Drink the wine</button>
+    </li>
+  );
+  }
+});
+
+var App = React.createClass({
+  getInitialStat: function() {
     return {
-      wine: []
+      wines: []
     };
   },
-
-  editWine: function(id) {
-    return () => {
-      var holder = this.state.wine.map(function(wine) {
-        if (id === wine._id) wine.editing = true;
-        return wine;
-      });
-      this.setState({
-        wine: holder
-      });
-    };
+  componentDidMount: function() {
+    this.loadWinesFromServer();
   },
 
-  removeWine: function(id) {
-    return () => {
-      var holder = this.state.wine.filter(function(wine) {
-        if (wine._id === id) return false;
-        return true;
-      });
-      this.setState({
-        wine: holder
-      });
-
-      $.ajax({
-        url: 'http://localhost:3000/api/wine/' + id,
-        type: 'DELETE'
-      }).then(function(data) {
-        console.log(data);
-      });
-    };
-  },
-
-  saveWine: function(event) {
-    event.preventDefault();
-    var wineData = {
-      name: event.target.children['wine-name'].value,
-      description: event.target.children['wine-description'].value,
-    };
-
+  loadWinesFromServer: function() {
     $.ajax({
-      url: 'http//localhost:3000/api/wine/' + event.target.id,
-      type: 'PUT',
-      data: wineData
-    }).then(function(data) {
-      console.log(data);
-      }, function(err) {
-        console.log(err);
-      });
-
-      var holder = this.state.wine.map(function(wine) {
-        if (wine._id === event.target.id) {
-          wine.name = wineData.name;
-          wine.description = wineData.description;
-          wine.editing = false;
-        }
-        return wine;
-      });
-      this.setState({
-        wine: holder
-      });
-    },
-
-    displayWine: function() {
-      $.ajax({
-        url: 'http://localhost:3000/api/wine',
-        type: 'GET'
-      }).then((data) => {
-        data.forEach(function(wine) {
-          wine.editing = false;
-        });
-        this.setState({
-          wine: data
-        });
-      });
-    },
-
-    render: function() {
-      return (
-        <ol>
-        { this.state.wine.map((wine) => {
-          return (
-            <li key = { wine._id } >
-              <p>Name: { wine.name }</p>
-              <p>Description: { wine.description }</p>
-              <p><button onClick = { this.editWine(wine._id) } > EDIT < /button>
-              <button onClick = { this.removeWine(wine._id) } > DELETE < /button> </p>
-
-            <form id = { wine._id } className = { wine.editing ? null : 'hidden' } onSubmit = { this.saveWine }>
-                <input type = "text" name = "wine-name" placeholder = "Wine Name" defaultValue = { wine.name } />
-                <input type = "text" name = "wine-description" placeholder = "Wine Description" defaultValue = { wine.description } />
-                <button type = "submit"> SAVE WINE</button>
-            </form>
-              </li>
-          );
-        })}
-      </ol>
-      );
+      url: 'http://localhost:5000/api/wine',
+      type: 'GET',
+      success: function(wines) {
+        this.setState({ wines: wines });
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.log(status, err.toString());
+      }
+    });
+  },
+  handleWineSubmit: function(pets) {
+    console.log(wines);
+    superagent
+    .post('http://localhost:5000/api/wine')
+    .send(wines)
+    .end((err) => {
+      console.log(err);
+      this.loadWinesFromServer();
     }
-  });
-
-  var NewWine = React.createClass({
-    createWine: function(event) {
-      event.preventDefault();
-
-      var wineData = {
-        name: event.target.children['wine-name'].value,
-        description: event.target.children['wine-description'].value,
-      };
-
-      $.post('http://localhost:3000/api/wine', wineData, function(data) {
-        console.log(data);
-        document.location.reload(true);
-      });
-    },
-
-    render: function() {
+  );
+  },
+  render: function() {
+    return (
+    <section>
+    <ul>
+    { this.state.wines.map((wine) => {
       return (
-        <form onSubmit={this.createWine}>
-          <input type="text" name="wine-name" placeholder="Wine Name" />
-          <input type="text" name="wine-description" placeholder="Wine Description" />
-          <button type="submit">CREATE WINE</button>
-        </form>
+        <List _id= {wine._id} name={wine.name} description={wine.description}
+        loadWinesFromServer = {this.loadWinesFromServer}
+        >
+        </List>
       );
-    }
-  });
+    })}
+    </ul>
+    <h2>
+    Create wine
+    </h2>
+    <CreateNewWine onWineSubmit={ this.handleWineSubmit } />
+    </section>
+  );
+  }
+});
 
-  ReactDOM.render( < GetWine /> , document.getElementById('wine-holder'));
-  ReactDOM.render( < NewWine /> , document.getElementByID('newwine'));
+var CreateNewWine = React.createClass({
+  getInitialState: function() {
+    return ({ name: '', description: '' });
+  },
+  nameInput: function(e) {
+    this.setState({ name: e.target.value });
+  },
+  descriptionInput: function(e) {
+    this.setState({ description: e.target.value });
+  },
+  handleSubmit: function(e) {
+    e.preventDefault();
+    var name = this.state.name.trim();
+    var description = this.state.description.trim();
+    if (!name || !description) {
+      return;
+    }
+    this.props.onWineSubmit({ name: name, description: description });
+    this.setState({ name: '', description: '' });
+  },
+  render: function() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+      <label for="name">Name</label>
+      <input type="text" name="name" value={this.state.name} onChange={this.nameInput}/>
+      <label name="description" >description</label>
+      <input type="text" name="description" value={this.state.description} onChange={this.descriptionInput}/>
+      <button type="submit">Create a Wine</button>
+      </form>
+    );
+  }
+});
+
+ReactDom.render(<App></App>, document.getElementById('app'));

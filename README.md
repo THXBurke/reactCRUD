@@ -6,5 +6,6 @@ Write  a single resource CRUD client app using a framework other Angular. You ca
 
 * open a terminal window and in master branch go into client and run node server.js and the window should respond with 'Client Server ready on port 5000'
 * To witness the client's wine party go to the browser window and enter http://localhost:5000
-
-* go to a new terminal window and navigate to the server directory and run node server.js and the window should respond with 'Good things happen at http://localhost: 3000'
+* go to a new terminal window and navigate to the server directory and run node server.js and the window should respond with 'Good things happen at port: 3000'
+* run gulp in both the server and client directories
+* open a new terminal and run mongod
