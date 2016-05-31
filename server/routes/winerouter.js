@@ -35,6 +35,6 @@ wineRouter.put('/wine/:id', bodyParser, (req, res) => {
 wineRouter.delete('/wine/:id', (req, res) => {
   Wine.remove({ _id: req.params.id }, (err) => {
     if (err) return error_handler(err, res);
-    res.status(200).json({ msg: 'Delete that wine' });
+    res.status(200).json({ msg: 'Drink that wine' });
   });
 });

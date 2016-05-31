@@ -1,5 +1,5 @@
 const gulp = require('gulp');
-// const webpack = require('webpack-stream');
+const webpack = require('webpack-stream');
 const eslint = require('gulp-eslint');
 
 var paths = ['**/*.js', '!node_modules/**', '!db/**'];
