@@ -1,6 +1,6 @@
 const React = require('react');
-const ReactDOM = require('react-dom');
-const $ = require('jquery');
+const ReactDom = require('react-dom');
+// const $ = require('jquery');
 const superagent = require('superagent');
 
 var List = React.createClass({
@@ -11,7 +11,7 @@ var List = React.createClass({
   handleWineDelete: function() {
     console.log(this.wines._id);
     superagent
-    .delete('http://localhost:5000/api/wine' + this.wines._id)
+    .delete('http://localhost:3000/api/wines' + this.wines._id)
     .end((err) => {
       console.log(err);
       this.wines.loadWinesFromServer();
@@ -29,7 +29,7 @@ var List = React.createClass({
 });
 
 var App = React.createClass({
-  getInitialStat: function() {
+  getInitialState: function() {
     return {
       wines: []
     };
@@ -40,7 +40,7 @@ var App = React.createClass({
 
   loadWinesFromServer: function() {
     $.ajax({
-      url: 'http://localhost:5000/api/wine',
+      url: 'http://localhost:3000/api/wines',
       type: 'GET',
       success: function(wines) {
         this.setState({ wines: wines });
@@ -50,10 +50,9 @@ var App = React.createClass({
       }
     });
   },
-  handleWineSubmit: function(pets) {
-    console.log(wines);
+  handleWineSubmit: function(wines) {
     superagent
-    .post('http://localhost:5000/api/wine')
+    .post('http://localhost:3000/api/wines')
     .send(wines)
     .end((err) => {
       console.log(err);
